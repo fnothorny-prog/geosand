@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: geosand-backend
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 80
