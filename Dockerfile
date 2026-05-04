@@ -26,7 +26,7 @@ WORKDIR /var/www/html
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copy application files
-COPY backend-laravel/ .
+COPY . .
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
