@@ -28,6 +28,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy application files
 COPY . .
 
+# Copy production environment file
+COPY .env.production .env
+
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
@@ -49,6 +52,9 @@ RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /e
 
 # Generate app key
 RUN php artisan key:generate --force || true
+
+# Run migrations
+RUN php artisan migrate --force || true
 
 # Expose port
 EXPOSE 80
