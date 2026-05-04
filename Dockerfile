@@ -56,6 +56,9 @@ RUN php artisan key:generate --force || true
 # Run migrations
 RUN php artisan migrate --force || true
 
+# Run seeders
+RUN php artisan db:seed --force || true
+
 # Expose port
 EXPOSE 80
 
