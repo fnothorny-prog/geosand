@@ -94,15 +94,14 @@ class QuarryController extends Controller
         $quarry = Quarry::create([
             'name' => $validated['name'],
             'permit_number' => $validated['permit_number'],
-            'address' => $validated['address'],
-            'permit_expiry' => $validated['permit_expiry'],
+            'location' => $validated['address'],
+            'permit_expiry_date' => $validated['permit_expiry'],
             'latitude' => $validated['latitude'],
             'longitude' => $validated['longitude'],
-            'area' => $validated['area'] ?? null,
+            'total_area_hectares' => $validated['area'] ?? null,
             'polygon' => $validated['polygon'] ?? null,
             'description' => $validated['description'] ?? null,
-            'is_active' => $validated['is_active'] ?? true,
-            'created_by' => $request->user()->id,
+            'status' => ($validated['is_active'] ?? true) ? 'active' : 'inactive',
         ]);
 
         // Log audit
@@ -165,10 +164,23 @@ class QuarryController extends Controller
         }
 
         // Store old values for audit
-        $oldValues = $quarry->only(['name', 'permit_number', 'address', 'permit_expiry', 'latitude', 'longitude', 'area', 'is_active']);
+        $oldValues = $quarry->only(['name', 'permit_number', 'location', 'permit_expiry_date', 'latitude', 'longitude', 'total_area_hectares', 'status']);
+
+        // Map frontend field names to database field names
+        $updateData = [];
+        if (isset($validated['name'])) $updateData['name'] = $validated['name'];
+        if (isset($validated['permit_number'])) $updateData['permit_number'] = $validated['permit_number'];
+        if (isset($validated['address'])) $updateData['location'] = $validated['address'];
+        if (isset($validated['permit_expiry'])) $updateData['permit_expiry_date'] = $validated['permit_expiry'];
+        if (isset($validated['latitude'])) $updateData['latitude'] = $validated['latitude'];
+        if (isset($validated['longitude'])) $updateData['longitude'] = $validated['longitude'];
+        if (isset($validated['area'])) $updateData['total_area_hectares'] = $validated['area'];
+        if (isset($validated['polygon'])) $updateData['polygon'] = $validated['polygon'];
+        if (isset($validated['description'])) $updateData['description'] = $validated['description'];
+        if (isset($validated['is_active'])) $updateData['status'] = $validated['is_active'] ? 'active' : 'inactive';
 
         // Update only the provided fields
-        $quarry->update($validated);
+        $quarry->update($updateData);
 
         // Log audit
         \App\Models\AuditLog::log(
