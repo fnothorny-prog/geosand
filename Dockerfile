@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     default-mysql-client \
+    gettext-base \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
