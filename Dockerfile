@@ -61,5 +61,5 @@ RUN chmod +x /usr/local/bin/start.sh
 # Expose port
 EXPOSE 80
 
-# Start with custom script
-CMD ["/usr/local/bin/start.sh"]
+# Start Apache directly (environment variables will be available at runtime)
+CMD ["apache2-foreground"]
