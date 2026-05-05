@@ -212,8 +212,8 @@ class QuarryController extends Controller
             return $this->errorResponse('Quarry not found', 404);
         }
 
-        // Soft deactivation - set is_active to false
-        $quarry->update(['is_active' => false]);
+        // Soft deactivation - set status to inactive
+        $quarry->update(['status' => 'inactive']);
 
         // Log audit
         \App\Models\AuditLog::log(
@@ -221,8 +221,8 @@ class QuarryController extends Controller
             "Deactivated quarry: {$quarry->name}",
             'Quarry',
             $quarry->id,
-            ['is_active' => true],
-            ['is_active' => false]
+            ['status' => 'active'],
+            ['status' => 'inactive']
         );
 
         return $this->successResponse([
