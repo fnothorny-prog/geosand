@@ -12,10 +12,10 @@ class QuarryController extends Controller
 
     // Bongabong, Oriental Mindoro approximate boundaries
     // These coordinates define a bounding box for Bongabong
-    private const BONGABONG_MIN_LAT = 12.6000;
-    private const BONGABONG_MAX_LAT = 12.8000;
-    private const BONGABONG_MIN_LNG = 121.3000;
-    private const BONGABONG_MAX_LNG = 121.5000;
+    private const BONGABONG_MIN_LAT = 12.5000;
+    private const BONGABONG_MAX_LAT = 12.9500;
+    private const BONGABONG_MIN_LNG = 121.2000;
+    private const BONGABONG_MAX_LNG = 121.6000;
 
     /**
      * List all quarries (public endpoint - active quarries only for non-admin).
