@@ -50,17 +50,15 @@ RUN echo '<Directory /var/www/html/public>\n\
 # Set document root to public folder
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
-# Generate app key
-RUN php artisan key:generate --force || true
+# Generate app key (skip if .env already has one)
+RUN php artisan config:cache || true
 
-# Run migrations
-RUN php artisan migrate --force || true
-
-# Run seeders
-RUN php artisan db:seed --force || true
+# Copy startup script
+COPY start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
 
 # Expose port
 EXPOSE 80
 
-# Start Apache
-CMD ["apache2-foreground"]
+# Start with custom script
+CMD ["/usr/local/bin/start.sh"]
