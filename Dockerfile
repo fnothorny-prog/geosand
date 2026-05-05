@@ -51,8 +51,8 @@ RUN echo '<Directory /var/www/html/public>\n\
 # Set document root to public folder
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
-# Generate app key (skip if .env already has one)
-RUN php artisan config:cache || true
+# Skip config cache at build time - will be done at runtime
+# RUN php artisan config:cache || true
 
 # Copy startup script
 COPY start.sh /usr/local/bin/start.sh
@@ -61,5 +61,5 @@ RUN chmod +x /usr/local/bin/start.sh
 # Expose port
 EXPOSE 80
 
-# Start Apache directly (environment variables will be available at runtime)
-CMD ["apache2-foreground"]
+# Use startup script to clear cache before starting
+CMD ["/usr/local/bin/start.sh"]
